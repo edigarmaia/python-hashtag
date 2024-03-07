@@ -12,16 +12,40 @@
 </head>
 <body>
 
-        <h1>Hashzap</h1>  
+        <h1>Meu Zap</h1>  
 
     <div id="lista_mensagens">
-       lista mensagens
+
     </div>
     <input type="text" id="usuario" placeholder="Usuario" required>
 
     <input type="text" id="mensagem" placeholder="Mensagem" required>
 
     <button id="botao">Enviar</button>
+        <!--Javascript-->
+        <script>
+            $(document).ready(function(){
+
+
+                var socket = io("192.168.100.153:5000");
+                /*var socket = io("localhost:5000");*/
+                socket.on("connect", function(){
+                    console.log("usuario conectou")
+                });
+
+                socket.on("message", function(data){
+                    console.log("disparou uma mensagem");
+                    $("#lista_mensagens").append($("<p>").text(data));
+                });
+
+                $("#botao").on('click', function(){
+                    console.log("botao clicked ");
+                    socket.send($("#usuario").val() + ": " + $("#mensagem").val());
+                    $("#mensagem").val("");
+                })
+
+            })
+        </script>
 
 </body>
 </html>
